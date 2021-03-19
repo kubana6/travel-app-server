@@ -18,13 +18,13 @@ router.post('/registration',
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: "Uncorrect request", errors })
       }
-      const { email, password, name } = req.body
+      const { email, password, name, imeg } = req.body
       const candidate = await User.findOne({ email })
       if (candidate) {
         return res.status(400).json({ message: `User with email ${email} already exist` })
       }
       const hashPassword = await bcrypt.hash(password, 8)
-      const user = new User({ email, password: hashPassword, name })
+      const user = new User({ email, password: hashPassword, name, imeg })
       await user.save()
       res.json({ message: "User was created" })
     } catch (e) {
@@ -52,6 +52,8 @@ router.post('/login',
         user: {
           id: user.id,
           email: user.email,
+          name: user.name,
+          imeg: user.imeg
         }
       })
     } catch (e) {
@@ -70,6 +72,8 @@ router.get('/auth', authMiddleware,
         user: {
           id: user.id,
           email: user.email,
+          imeg: user.imeg,
+          name:user.name,
         }
       })
     } catch (e) {

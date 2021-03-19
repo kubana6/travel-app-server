@@ -8,7 +8,7 @@ const router = Router();
 router.get("/", async (req, res, next) => {
   const list = await storage.listAll()
   console.log(list)
-  res.json(list);
+  res.json(list[0]);
 });
 
 router.get("/:id", async (req, res, next) => {
